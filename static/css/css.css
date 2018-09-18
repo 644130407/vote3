@@ -1,0 +1,24 @@
+body{
+    background: url("/static/imgs/timg.jpg") no-repeat center center fixed;
+     -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+   background-size: cover;
+    /*background-color: #5eb95e;*/
+}
+
+.login-password{
+    margin-top: 50px;
+}
+.login-title{
+    margin-top: 25%;
+    font-family: "Microsoft YaHei","黑体","宋体","Arial",sans-serif;
+    color: #c7c7c7;
+}
+.login-submit {
+    width: 80%;
+    margin-top: 50px;
+}
+#am-form>.login-text{
+    width: 80%;
+}
