@@ -1,0 +1,29 @@
+<html>
+<head></head>
+<body>
+<input value="上传图片" type="file" id="file" name="file" onchange="show(this.files)" />
+ <br />
+ <img height="50" width="50" id="img"  />
+</body>
+<script>
+//头像上传预览
+    $("#up").change(function() {
+        var $file = $(this);
+        var fileObj = $file[0];
+        var windowURL = window.URL || window.webkitURL;
+        var dataURL;
+        var $img = $("#ImgPr");
+        if(fileObj && fileObj.files && fileObj.files[0]){
+        dataURL = windowURL.createObjectURL(fileObj.files[0]);
+        $img.attr('src',dataURL);
+        }else{
+        dataURL = $file.val();
+        var imgObj = document.getElementById("ImgPr");
+        imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+        imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
+
+        }
+    });
+
+</script>
+</html>

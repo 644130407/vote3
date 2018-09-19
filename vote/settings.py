@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'vote3',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'PORT': 3306,
     }
@@ -127,3 +127,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+ALLOWED_HOSTS="*"
