@@ -1,4 +1,4 @@
-body{
+.loginbg{
     background: url("/static/imgs/timg.jpg") no-repeat center center fixed;
      -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -21,4 +21,13 @@ body{
 }
 #am-form>.login-text{
     width: 80%;
+}
+
+.checkinbg{
+    background: url("/static/imgs/bgtree.jpg") no-repeat center center fixed;
+     -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+   background-size: cover;
+    /*background-color: #5eb95e;*/
 }

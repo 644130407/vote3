@@ -11,5 +11,6 @@ def login(request):
         print(no)
         print(password)
         result = models.UserInfo.objects.filter(no=no).filter(password=password)
-        print(result)
+        print(result[0].password)
+
         return redirect('/login/')

@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse
+from checkin import models
 import os
 # Create your views here.
 def upload(request):
@@ -14,7 +15,10 @@ def picUpload(request):
     for chunk in obj.chunks():
         f.write(chunk)
     f.close()
-    ret = {'status': True, 'path': file_path}
+    # ret = {'status': True, 'path': file_path}
+    models.PicsInfo.objects.create(no="1", path=file_path, date="1")
     return HttpResponse(0)
 
+def checkin(request):
+    return render(request, "checkin.html")
 # https://www.cnblogs.com/gregoryli/p/7683732.html
