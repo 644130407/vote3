@@ -415,3 +415,7 @@ table {
     pointer-events: none;
     opacity: 0.6;
 }
+
+.fontlg{
+    font-size: xx-large;
+}

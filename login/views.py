@@ -8,9 +8,10 @@ def login(request):
     else:
         no = request.POST.get('no')
         password = request.POST.get('password')
-        print(no)
-        print(password)
-        result = models.UserInfo.objects.filter(no=no).filter(password=password)
-        print(result[0].password)
 
+        result = models.UserInfo.objects.filter(no=no).filter(password=password)
+        if(len(result)>0):
+            request.session['uno'] = result[0].no
+            request.session['user'] = result[0].username
+            return redirect('/checkin/')
         return redirect('/login/')

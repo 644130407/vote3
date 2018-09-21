@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'checkin',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE  = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'vote3',
         'USER': 'root',
-        'PASSWORD': '123',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': 3306,
     }

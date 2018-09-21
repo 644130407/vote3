@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="tree">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
         <link rel="stylesheet" href="/static/amaze/css/amazeui.min.css">
     <link rel="stylesheet" href="/static/css/css.css">
+
 </head>
 <body class="checkinbg">
-
+<div style="width: 300px; height: 200px; background-color: #0a628f;
+position: absolute; top: 1100pt; left: 30%"></div>
 </body>
 
 <script src="/static/js/jquery-3.3.1.min.js"></script>
 <script src="/static/amaze/js/amazeui.min.js"></script>
 <script>
-
+document.getElementById("tree").onclick=function(){
+    window.location.href = "/upload"
+};
 </script>
 </html>

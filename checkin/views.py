@@ -1,9 +1,12 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from checkin import models
 import os
 # Create your views here.
 def upload(request):
-    return render(request, "pics.html")
+    if request.session['uno'] != '':
+        return render(request, "pics.html")
+    else:
+        return redirect('/login/')
 
 def picUpload(request):
     print(request.POST)
@@ -20,5 +23,9 @@ def picUpload(request):
     return HttpResponse(0)
 
 def checkin(request):
-    return render(request, "checkin.html")
+    if request.session.get('uno'):
+        return render(request, "checkin.html")
+    else:
+        return redirect('/login/')
+
 # https://www.cnblogs.com/gregoryli/p/7683732.html
