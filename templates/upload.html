@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/amaze/css/amazeui.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/webuploader.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    <style>
+        textarea{
+            font-size:2.5em;
+            width: 37rem;
+        }
+    </style>
+
+</head>
+<body>
+<div class="am-g" style="margin: 0px; padding: 0px">
+    <div class="am-u-sm-12" style="margin: 0px; padding: 0px">
+        <img src="/static/imgs/upbg.png" alt="" class="am-img-responsive" style="margin: 0px; padding: 0px">
+        <div style="position: absolute; left: 21rem; top: 27rem; font-size: 38px">
+            <div>姓名： {{ username }}</div>
+        </div>
+        <div style="position: absolute; left: 21rem; top: 33rem; font-size: 38px">
+            <div>所在分局：{{ danwei }}</div>
+        </div>
+        <div style="position: absolute; left: 21rem; top: 39rem; font-size: 38px">
+            <div>挑战项目：{{ xiangmu }}</div>
+        </div>
+    </div>
+
+    <div id="wrapper">
+    <div id="container" style="width:39rem; height:13rem; position: absolute; top:55rem; left: 12rem">
+        <!--头部，相册选择和格式选择-->
+
+        <div id="uploader">
+            <div class="queueList">
+                <div id="dndArea" class="placeholder">
+                    <div id="filePicker"></div>
+                </div>
+            </div>
+            <div class="statusBar" style="display:none;">
+                <div class="progress">
+                    <span class="text">0%</span>
+                    <span class="percentage"></span>
+                </div>
+                <div class="info"></div>
+                <div class="btns">
+                    <div id="filePicker2"></div>
+                    <div class="uploadBtn fontlg" style="position: relative; top: 3rem;">开始上传</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div>
+        <textarea name="" id="bref" cols="29" rows="4"
+                  style="position: absolute; top:81.5rem; left: 13.4rem"
+                  placeholder="限制在100个字"
+                  style="font-size: 3rem"
+        ></textarea>
+    </div>
+        <button id="submit" type="button" class="am-btn am-btn-default am-round am-btn-xl"
+            style="position: absolute; color: whitesmoke; bottom: 7rem; left:25rem; background-color: #aa4b00; width: 14rem"
+    >提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+
+
+</div>
+
+
+
+{#    <div class="content">#}
+{#        <div>#}
+{#            <input type="file" id="picture" class="am-btn am-btn-danger am-round">#}
+{#        </div>#}
+{#        <div>#}
+{#            <img src="" alt=""  style="position:absolute; width: 200px; height: 200px">#}
+{#        </div>#}
+{#    </div>#}
+
+
+</div>
+</body>
+<script src="/static/js/jquery-3.3.1.min.js"></script>
+<script src="/static/amaze/js/amazeui.min.js"></script>
+<script type="text/javascript" src="/static/js/webuploader.js"></script>
+<script type="text/javascript" src="/static/js/upload.js"></script>
+
+<script>
+    $("#submit").click(function () {
+        {#alert($("#bref").val())#}
+            $.ajax({
+                url:"saveInfo/",
+                method: "post",
+                data: {
+                    bref: $("#bref").val()
+                },
+                success: function (data) {
+                    if(data==1){
+                        alert("提交成功")
+                        WeixinJSBridge.call('closeWindow');
+                        window.close()
+                        window.top.close()
+
+                    }else if(data==0){
+                        alert("提交失败")
+                    }else if(data == 2){
+                        alert("请先上传图片")
+                    }else if(data == 3){
+                        alert("请先填写介绍")
+                    }
+
+                },
+                error: function (err) {
+                    alert("提交失败")
+                }
+            })
+        })
+</script>
+
+{#<script>#}
+{#    function preview_picture(pic) {#}
+{#        var r = new FileReader();#}
+{#        r.readAsDataURL(pic);#}
+{#        r.onload = function (e) {#}
+{#            $(".content > div> img").attr("src", this.result).show()#}
+{#        }#}
+{#    }#}
+{#    $("#picture").change(function () {#}
+{#        var current_pic = this.files[0];#}
+{#        console.log(current_pic)#}
+{#        preview_picture(current_pic);#}
+{#        $.ajax({#}
+{#            url: 'picUpload/',#}
+{#            method: 'POST',#}
+{#            data: {#}
+{#                FILES: #}
+{#            }#}
+{#        })#}
+{#    })#}
+{##}
+{#</script>#}
+</html>

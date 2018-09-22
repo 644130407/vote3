@@ -31,3 +31,7 @@
    background-size: cover;
     /*background-color: #5eb95e;*/
 }
+
+.login-input{
+    width: 20rem;
+}

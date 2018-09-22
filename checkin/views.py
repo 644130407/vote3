@@ -3,21 +3,43 @@ from checkin import models
 import os
 import datetime
 import time
+from login import models
 # Create your views here.
+
+def mkdir(path):
+    path = path.strip()
+
+    path = path.rstrip("\\")
+    isExists = os.path.exists(path)
+
+    if not isExists:
+        os.makedirs(path)
+
+        print(path + ' 创建成功')
+        return True
+    else:
+        print(path + ' 目录已存在')
+        return False
+
+
 def upload(request):
     if request.session.get('uno'):
         print(request.session.get('uno'))
-        return render(request, "pics.html")
+        no = request.session.get('uno')
+        result = models.UserInfo.objects.filter(no=no)
+        return render(request, "upload.html", {'username': result[0].username, 'danwei': result[0].danwei, 'xiangmu': result[0].xiangmu})
     else:
         return redirect('/login/')
 
 def picUpload(request):
-    print(request.POST)
-    print(request.GET)
+
     obj = request.FILES.get('file')
     print(obj.size, obj.name)
 
-    file_path = os.path.join('static', 'upload', obj.name)
+    path = os.path.join('static', 'upload', str(request.session.get('uno')))
+    mkdir(path)
+
+    file_path = os.path.join('static', 'upload', str(request.session.get('uno')), obj.name)
     f = open(file_path, 'wb')
     for chunk in obj.chunks():
         result = f.write(chunk)
@@ -28,7 +50,7 @@ def picUpload(request):
     ts = str(round(time.time()*1000))
     print(ts)
 
-    new_file = os.path.join('static', 'upload', ts + ext)
+    new_file = os.path.join('static', 'upload', str(request.session.get('uno')), ts + ext)
 
     os.rename(file_path, new_file)
     # ret = {'status': True, 'path': file_path}
@@ -46,6 +68,7 @@ def checkin(request):
         return redirect('/login/')
 
 def saveInfo(request):
+    from checkin import models
     print("saveInfo")
     path = request.session.get('path')
     no = request.session.get('uno')
@@ -62,6 +85,8 @@ def saveInfo(request):
         return HttpResponse(1)
     else:
         return HttpResponse(0)
+
+
 
 
 

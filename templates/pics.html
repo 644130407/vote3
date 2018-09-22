@@ -9,29 +9,7 @@
 </head>
 <body>
 
-    <div id="wrapper">
-        <div id="container">
-            <!--头部，相册选择和格式选择-->
 
-            <div id="uploader">
-                <div class="queueList">
-                    <div id="dndArea" class="placeholder">
-                        <div id="filePicker"></div>
-                        <p class="fontlg">选择1张准备提交的图片，点击“开始上传”按钮即可上传</p>
-                    </div>
-                </div>
-                <div class="statusBar" style="display:none;">
-                    <div class="progress">
-                        <span class="text">0%</span>
-                        <span class="percentage"></span>
-                    </div><div class="info"></div>
-                    <div class="btns">
-                        <div id="filePicker2"></div><div class="uploadBtn fontlg">开始上传</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 <div class="am-g">
     <div class="am-u-sm-12">
         <input type="text" id="bref" class="am-form-field" placeholder="请输入相关评论">
@@ -66,6 +44,7 @@ window.close();
 else{}
         })
         $("#submit").click(function () {
+            alert($("#bref").val())
             $.ajax({
                 url:"saveInfo/",
                 method: "post",

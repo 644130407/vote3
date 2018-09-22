@@ -2,24 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
     <title>津卫青年</title>
     <link rel="stylesheet" href="/static/amaze/css/amazeui.min.css">
-    <link rel="stylesheet" href="/static/css/css.css">
+{#    <link rel="stylesheet" href="/static/css/css.css">#}
 </head>
-<body class="loginbg">
-<div class="am-g">
-    <div class="am-text-center login-title">
-        <h1>登录界面</h1>
+<body style="margin: 0px; padding: 0px">
+
+<div style="width:100%; margin: 0px; padding: 0px;">
+    <div style="margin: 0px; padding: 0px">
+        <img src="/static/imgs/loginbg1.png"  class="am-img-responsive" alt="" style="margin: 0px; padding: 0px;">
     </div>
-    <form action="/login/" method="post" class="am-form" id="am-form">
-        <input type="text" name="shouji" class="am-input-lg am-round login-text am-center" placeholder="电话号码">
+    <div style="width:100%; margin: 0px; padding: 0px; position: relative">
+        <form action="/login/" method="post" style="position: absolute; left: 25rem" >
 
-        <input type="text" name="password" class="am-input-lg am-round login-password login-text am-center" placeholder="登录密码">
+            <label for=""
+                   style="position:absolute; top:0.1rem; left:6rem; width: 16rem; height: 2rem;font-size: 3rem">登录账号</label>
 
-        <input type="submit" class="am-btn am-btn-success am-btn-lg login-submit am-center am-round" value="登录">
-    </form>
+            <input type="text" name="uno" class="am-round am-center"
+                   style="width: 23rem; font-size: xx-large; height: 4rem; position: absolute; left: 20rem; top: 0.2rem"
+            >
+            <label for=""
+                   style="width: 16rem; height: 2rem;font-size: 3rem; position: absolute; left: 6rem;top:6rem">登录密码</label>
+            <input type="password" name="password" class="am-round am-center"
+                   style="width: 23rem; font-size: xx-large; height: 4rem;position: absolute; left: 20rem;top:6.5rem"
+            >
+
+            <input type="submit" class="am-btn am-btn-success am-btn-lg login-submit am-center am-round" value="登录"
+                   style="font-size: 3rem; width: 16rem;height: 6rem; position: absolute; top: 13rem; position: absolute; left: 19rem">
+        </form>
+        <img src="/static/imgs/loginbg2.png"  class="am-img-responsive" alt="" style="margin: 0px; padding: 0px;">
+
+    </div>
+{#    <div class="am-u-sm-12" style="margin: 0px; padding: 0px;">#}
+{#        <img src="/static/imgs/loginbg.png"  class="am-img-responsive" alt="" style="margin: 0px; padding: 0px;">#}
+{#    </div>#}
+{##}
+{#    <div class="am-text-center login-title">#}
+{#        <h1>登录界面</h1>#}
+{#    </div>#}
+{#    <form action="/login/" method="post">#}
+{##}
+{#        <label for=""#}
+{#        style="width: 16rem; height: 2rem; position: absolute; top: 84rem; left: 23rem; font-size: 3rem">警员号码</label>#}
+{##}
+{#        <input type="text" name="uno" class="am-round am-center"#}
+{#               style="width: 23rem; height: 4rem; position: absolute; top: 84rem; left: 38rem; font-size: xx-large"#}
+{#        >#}
+{#        <label for=""#}
+{#        style="width: 16rem; height: 2rem; position: absolute; top: 90rem; left: 23rem; font-size: 3rem">登录密码</label>#}
+{#        <input type="password" name="password" class="am-round am-center"#}
+{#               style="width: 23rem; height: 4rem; position: absolute; top: 90rem; left: 38rem; font-size: xx-large"#}
+{#        >#}
+{##}
+{#        <input type="submit" class="am-btn am-btn-success am-btn-lg login-submit am-center am-round" value="登录"#}
+{#        style="position: absolute; top:98rem; left: 33rem; font-size: 3rem; width: 16rem;height: 6rem">#}
+{#    </form>#}
 </div>
 
 {#<div class="am-g">#}

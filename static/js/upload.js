@@ -142,6 +142,7 @@
             pick: {
                 id: '#filePicker',
                 innerHTML: '点击选择图片',
+
                 //"multiple":false,     // 多选
             },
 
@@ -164,11 +165,11 @@
             prepareNextFile:'true', // 是否允许在文件传输时提前把下一个文件准备好。 对于一个文件的准备工作比较耗时，比如图片压缩，md5序列化。 如果能提前在当前文件传输期处理，可以节省总体耗时。
 
             // 允许上传文件类型
-            //accept: {
-            //     title: 'Images',
-            //     extensions: 'gif,jpg,jpeg,bmp,png',
-            //     mimeTypes: 'image/*'
-            //},
+            accept: {
+                title: 'Images',
+                extensions: 'jpg',
+                mimeTypes: 'image/*'
+            },
 
             //accept: {
             //    title: 'Applications',
@@ -220,10 +221,7 @@
         // });
 
         // 添加“添加文件”的按钮，
-        uploader.addButton({
-            id: '#filePicker2',
-            label: '继续添加'
-        });
+
 
         uploader.on('ready', function() {
             window.uploader = uploader;
@@ -231,7 +229,7 @@
 
         // 当有文件添加进来时执行，负责view的创建
         function addFile( file ) {
-            var $li = $( '<li id="' + file.id + '">' +
+            var $li = $( '<li id="' + file.id + '" style="position: relative; left: 14rem">' +
                     '<p class="title">' + file.name + '</p>' +
                     '<p class="imgWrap"></p>'+
                     '<p class="progress"><span></span></p>' +
