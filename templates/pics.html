@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>打卡上传</title>
+    <link rel="stylesheet" href="/static/amaze/css/amazeui.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/webuploader.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
 </head>
 <body>
+
     <div id="wrapper">
         <div id="container">
             <!--头部，相册选择和格式选择-->
@@ -15,7 +17,7 @@
                 <div class="queueList">
                     <div id="dndArea" class="placeholder">
                         <div id="filePicker"></div>
-                        <p class="fontlg">选择要提交的图片，单次最多可选5张</p>
+                        <p class="fontlg">选择1张准备提交的图片，点击“开始上传”按钮即可上传</p>
                     </div>
                 </div>
                 <div class="statusBar" style="display:none;">
@@ -30,8 +32,63 @@
             </div>
         </div>
     </div>
+<div class="am-g">
+    <div class="am-u-sm-12">
+        <input type="text" id="bref" class="am-form-field" placeholder="请输入相关评论">
+    </div>
+    <div class="am-u-sm-12" style="margin-top: 30px">
+
+        <input id="submit" type="submit" value="提交信息" class="am-btn am-btn-success am-round am-btn-lg am-u-sm-12">
+
+    </div>
+</div>
+
+{#<div class="am-g">#}
+{#    <div class="am-u-sm-12" style="margin-top: 30px">#}
+{##}
+{#        <input id="close" type="button" value="关闭窗口" class="am-btn am-btn-success am-round am-btn-lg am-u-sm-12">#}
+{##}
+{#    </div>#}
+{#</div>#}
     <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script src="/static/amaze/js/amazeui.min.js"></script>
     <script type="text/javascript" src="/static/js/webuploader.js"></script>
     <script type="text/javascript" src="/static/js/upload.js"></script>
+
+    <script>
+        $("#close").click(function () {
+            if
+(confirm("您确定要关闭本页吗？")){
+window.opener=null;
+window.open('','_self');
+window.close();
+}
+else{}
+        })
+        $("#submit").click(function () {
+            $.ajax({
+                url:"saveInfo/",
+                method: "post",
+                data: {
+                    bref: $("#bref").val()
+                },
+                success: function (data) {
+                    if(data==1){
+                        alert("提交成功")
+                    }else if(data==0){
+                        alert("提交失败")
+                    }else if(data == 2){
+                        alert("请先上传图片")
+                    }else if(data == 3){
+                        alert("请先填写介绍")
+                    }
+
+                },
+                error: function (err) {
+                    alert("提交失败")
+                }
+            })
+        })
+    </script>
 </body>
 </html>

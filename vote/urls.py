@@ -9,4 +9,5 @@ urlpatterns = [
     path('upload', views.upload),
     path('picUpload/', views.picUpload),
     path('checkin/', views.checkin),
+    path('saveInfo/', views.saveInfo),
 ]

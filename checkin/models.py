@@ -7,3 +7,4 @@ class PicsInfo(models.Model):
     path = models.CharField(max_length=256)
     date = models.IntegerField()
     no = models.CharField(max_length=32)
+    bref = models.CharField(max_length=2048, default="")
