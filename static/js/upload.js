@@ -165,11 +165,11 @@
             prepareNextFile:'true', // 是否允许在文件传输时提前把下一个文件准备好。 对于一个文件的准备工作比较耗时，比如图片压缩，md5序列化。 如果能提前在当前文件传输期处理，可以节省总体耗时。
 
             // 允许上传文件类型
-            accept: {
-                title: 'Images',
-                extensions: 'jpg',
-                mimeTypes: 'image/*'
-            },
+            //accept: {
+            //    title: 'Images',
+            //    extensions: 'jpg',
+            //    mimeTypes: 'image/*'
+            //},
 
             //accept: {
             //    title: 'Applications',
