@@ -1,9 +1,9 @@
 from django.shortcuts import render, HttpResponse, redirect
-from checkin import models
+from checkin import models as checkinModels
 import os
 import datetime
 import time
-from login import models
+from login import models as loginModels
 # Create your views here.
 
 def mkdir(path):
@@ -26,7 +26,7 @@ def upload(request):
     if request.session.get('uno'):
         print(request.session.get('uno'))
         no = request.session.get('uno')
-        result = models.UserInfo.objects.filter(no=no)
+        result = loginModels.UserInfo.objects.filter(no=no)
         return render(request, "upload.html", {'username': result[0].username, 'danwei': result[0].danwei, 'xiangmu': result[0].xiangmu})
     else:
         return redirect('/login/')
@@ -68,7 +68,7 @@ def checkin(request):
         return redirect('/login/')
 
 def saveInfo(request):
-    from checkin import models
+    # from checkin import models
     print("saveInfo")
     path = request.session.get('path')
     no = request.session.get('uno')
@@ -79,7 +79,7 @@ def saveInfo(request):
     if(bref == ""):
         return HttpResponse(3)
     print(path, no, bref, date)
-    result = models.PicsInfo.objects.create(no=no, path=path, date=date, bref=bref)
+    result = checkinModels.PicsInfo.objects.create(no=no, path=path, date=date, bref=bref)
     request.session['path'] = ""
     if result:
         return HttpResponse(1)
@@ -87,7 +87,14 @@ def saveInfo(request):
         return HttpResponse(0)
 
 
+# 打卡列表查询
 
+def voteList(request):
+    result = checkinModels.PicsInfo.objects.raw('''
+    select checkin_picsinfo.pid, login_userinfo.username, checkin_picsinfo.path from login_userinfo,checkin_picsinfo where login_userinfo.`no`=checkin_picsinfo.no
+    ''')
+    print(result[0].username)
+    return render(request, 'vote-list.html', {result: result})
 
 
 # https://www.cnblogs.com/gregoryli/p/7683732.html

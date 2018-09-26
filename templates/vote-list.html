@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/amaze/css/amazeui.css">
+</head>
+<body>
+<div class="am-g">
+    <p class="am-header">提交列表</p>
+    <table class="am-table am-table-bordered">
+        <tr>
+            <th>id</th>
+            <th>姓名</th>
+            <th>部门</th>
+            <th>打卡照片</th>
+            <th>打卡时间</th>
+        </tr>
+        {% for item in result  %}
+        <tr>
+            <td>{{ item }}</td>
+            <td>{{ item.bref }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+<script src="/static/js/jquery-3.3.1.min.js"></script>
+<script src="/static/amaze/js/amazeui.min.js"></script>
+</html>

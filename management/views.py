@@ -5,7 +5,7 @@ from management import models
 # Create your views here.
 def adminLogin(request):
     if request.method == 'GET':
-        return render(request, 'admin_login.html')
+        return render(request, 'admin-login.html')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
