@@ -94,7 +94,10 @@ def voteList(request):
     select checkin_picsinfo.pid, login_userinfo.username, checkin_picsinfo.path from login_userinfo,checkin_picsinfo where login_userinfo.`no`=checkin_picsinfo.no
     ''')
     print(result[0].username)
-    return render(request, 'vote-list.html', {result: result})
+    for item in result:
+        print(item.username)
+
+    return render(request, 'vote-list.html', {'result': result})
 
 
 # https://www.cnblogs.com/gregoryli/p/7683732.html

@@ -8,6 +8,7 @@
 <body>
 <div class="am-g">
     <p class="am-header">提交列表</p>
+{{ result }}
     <table class="am-table am-table-bordered">
         <tr>
             <th>id</th>
@@ -18,8 +19,8 @@
         </tr>
         {% for item in result  %}
         <tr>
-            <td>{{ item }}</td>
-            <td>{{ item.bref }}</td>
+            <td>{{ item.username }}</td>
+            <td>{{ item.path }}</td>
             <td></td>
             <td></td>
             <td></td>
