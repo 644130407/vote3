@@ -8,22 +8,24 @@
 <body>
 <div class="am-g">
     <p class="am-header">提交列表</p>
-{{ result }}
     <table class="am-table am-table-bordered">
         <tr>
-            <th>id</th>
+            <th>编号</th>
             <th>姓名</th>
             <th>部门</th>
             <th>打卡照片</th>
+            <th>留言</th>
             <th>打卡时间</th>
         </tr>
         {% for item in result  %}
         <tr>
+            <td>{{ item.no }}</td>
             <td>{{ item.username }}</td>
+            <td>{{ item.danwei }}</td>
+
             <td>{{ item.path }}</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{ item.bref }}</td>
+            <td>{{ item.date }} </td>
         </tr>
         {% endfor %}
     </table>

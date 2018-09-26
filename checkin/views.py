@@ -4,6 +4,8 @@ import os
 import datetime
 import time
 from login import models as loginModels
+
+
 # Create your views here.
 
 def mkdir(path):
@@ -27,12 +29,13 @@ def upload(request):
         print(request.session.get('uno'))
         no = request.session.get('uno')
         result = loginModels.UserInfo.objects.filter(no=no)
-        return render(request, "upload.html", {'username': result[0].username, 'danwei': result[0].danwei, 'xiangmu': result[0].xiangmu})
+        return render(request, "upload.html",
+                      {'username': result[0].username, 'danwei': result[0].danwei, 'xiangmu': result[0].xiangmu})
     else:
         return redirect('/login/')
 
-def picUpload(request):
 
+def picUpload(request):
     obj = request.FILES.get('file')
     print(obj.size, obj.name)
 
@@ -47,7 +50,7 @@ def picUpload(request):
     print(result)
     ext = os.path.splitext(file_path)[1]
 
-    ts = str(round(time.time()*1000))
+    ts = str(round(time.time() * 1000))
     print(ts)
 
     new_file = os.path.join('static', 'upload', str(request.session.get('uno')), ts + ext)
@@ -60,12 +63,14 @@ def picUpload(request):
 
     return HttpResponse(0)
 
+
 def checkin(request):
     if request.session.get('uno'):
         print('uno')
         return render(request, "checkin.html")
     else:
         return redirect('/login/')
+
 
 def saveInfo(request):
     # from checkin import models
@@ -74,9 +79,9 @@ def saveInfo(request):
     no = request.session.get('uno')
     bref = request.POST.get('bref')
     date = datetime.datetime.now().timestamp()
-    if(path == ""):
+    if (path == ""):
         return HttpResponse(2)
-    if(bref == ""):
+    if (bref == ""):
         return HttpResponse(3)
     print(path, no, bref, date)
     result = checkinModels.PicsInfo.objects.create(no=no, path=path, date=date, bref=bref)
@@ -91,13 +96,25 @@ def saveInfo(request):
 
 def voteList(request):
     result = checkinModels.PicsInfo.objects.raw('''
-    select checkin_picsinfo.pid, login_userinfo.username, checkin_picsinfo.path from login_userinfo,checkin_picsinfo where login_userinfo.`no`=checkin_picsinfo.no
+    select checkin_picsinfo.pid, login_userinfo.username, 
+    checkin_picsinfo.path, checkin_picsinfo.no, 
+    checkin_picsinfo.bref, login_userinfo.danwei,
+    checkin_picsinfo.date
+    from login_userinfo,checkin_picsinfo 
+    where login_userinfo.`no`=checkin_picsinfo.no
     ''')
     print(result[0].username)
+    i = 0
+    data = list(result)
     for item in result:
-        print(item.username)
+        data.append(item)
+        # print(type(item))
+        data[i].date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(item.date))
 
-    return render(request, 'vote-list.html', {'result': result})
+        print(data[i].date)
+        i = i + 1
 
+
+    return render(request, 'vote-list.html', {'result': data})
 
 # https://www.cnblogs.com/gregoryli/p/7683732.html
