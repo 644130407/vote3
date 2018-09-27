@@ -100,14 +100,13 @@ def voteList(request):
     checkin_picsinfo.path, checkin_picsinfo.no, 
     checkin_picsinfo.bref, login_userinfo.danwei,
     checkin_picsinfo.date
-    from login_userinfo,checkin_picsinfo 
-    where login_userinfo.`no`=checkin_picsinfo.no
-    ''')
-    print(result[0].username)
+    from login_userinfo inner join checkin_picsinfo 
+    on login_userinfo.`no`=checkin_picsinfo.no limit '''+ str(5) +',' + str(3))
+    print(result)
     i = 0
     data = list(result)
     for item in result:
-        data.append(item)
+        # data.append(item)
         # print(type(item))
         data[i].date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(item.date))
 
