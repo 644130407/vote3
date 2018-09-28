@@ -4,6 +4,7 @@ import os
 import datetime
 import time
 from login import models as loginModels
+from django.core.paginator import Paginator, Page
 
 
 # Create your views here.
@@ -100,11 +101,15 @@ def voteList(request):
     checkin_picsinfo.path, checkin_picsinfo.no, 
     checkin_picsinfo.bref, login_userinfo.danwei,
     checkin_picsinfo.date
-    from login_userinfo inner join checkin_picsinfo 
-    on login_userinfo.`no`=checkin_picsinfo.no limit '''+ str(5) +',' + str(3))
+    from login_userinfo left join checkin_picsinfo 
+    on login_userinfo.`no`=checkin_picsinfo.no limit '''+ str(5) +',' + str(30))
+
+
     print(result)
     i = 0
     data = list(result)
+
+
     for item in result:
         # data.append(item)
         # print(type(item))
@@ -113,7 +118,29 @@ def voteList(request):
         print(data[i].date)
         i = i + 1
 
+    paginator = Paginator(data, 1)
+    try:
+        current_page = int(request.GET.get('page'))
+        posts = paginator.page(current_page)
 
-    return render(request, 'vote-list.html', {'result': data})
+    except ValueError as e:
+        current_page = 1
+        posts = paginator.page(current_page)
+
+    page_len = list(posts.paginator.page_range).__len__()
+    show_page = 3
+    total_page = 5
+    top_num = page_len - current_page
+    bottom_num = current_page - 1
+    if(bottom_num >= show_page):
+        bottom_num = show_page
+
+    rest_page = total_page - bottom_num
+
+    if(top_num >= rest_page):
+        top_num = rest_page
+
+
+    return render(request, 'vote-list.html', {'posts': posts, 'top_num': range(current_page+1, current_page+top_num+1), 'bottom_num': range(current_page-bottom_num, current_page)})
 
 # https://www.cnblogs.com/gregoryli/p/7683732.html

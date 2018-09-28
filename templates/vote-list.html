@@ -17,18 +17,41 @@
             <th>留言</th>
             <th>打卡时间</th>
         </tr>
-        {% for item in result  %}
-        <tr>
-            <td>{{ item.no }}</td>
-            <td>{{ item.username }}</td>
-            <td>{{ item.danwei }}</td>
+        {% for item in posts %}
+            <tr>
+                <td>{{ item.no }}</td>
+                <td>{{ item.username }}</td>
+                <td>{{ item.danwei }}</td>
 
-            <td>{{ item.path }}</td>
-            <td>{{ item.bref }}</td>
-            <td>{{ item.date }} </td>
-        </tr>
+                <td><img src="/{{ item.path }}" alt="" class="am-img-thumbnail"></td>
+                <td>{{ item.bref }}</td>
+                <td>{{ item.date }} </td>
+            </tr>
         {% endfor %}
     </table>
+
+
+    <ul class="am-pagination am-pagination-centered">
+        {% if posts.has_previous %}
+            <li class="am-active"><a href="/voteList?page={{ posts.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+            <li class="am-disabled"><a href="#">&laquo;</a></li>
+        {% endif %}
+        {% for page in bottom_num %}
+            <li class="am-active"><a href="/voteList/?page={{ page }}">{{ page }}</a></li>
+        {% endfor %}
+        {% for page in top_num %}
+            <li class="am-active"><a href="/voteList/?page={{ page }}">{{ page }}</a></li>
+        {% endfor %}
+
+        {% if posts.has_next %}
+            <li class="am-active"><a href="/voteList?page={{ posts.next_page_number }}">&raquo;</a></li>
+            {% else %}
+            <li class="am-disabled"><a href="#">&raquo;</a></li>
+        {% endif %}
+    </ul>
+
+
 </div>
 </body>
 <script src="/static/js/jquery-3.3.1.min.js"></script>
