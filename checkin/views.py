@@ -5,6 +5,8 @@ import datetime
 import time
 from login import models as loginModels
 from django.core.paginator import Paginator, Page
+import math
+from xlwt import *
 
 
 # Create your views here.
@@ -96,13 +98,24 @@ def saveInfo(request):
 # 打卡列表查询
 
 def voteList(request):
+    # 当前页面
+    current_page = int(request.GET.get('page'))-1
+    # 所有记录条目数
+    all_item_num = checkinModels.PicsInfo.objects.count()
+    #每页显示条目数
+    each_page_num = 3
+    #页面总数
+    all_page_num = math.ceil(all_item_num /each_page_num)
+    #显示页码数
+    total_page = 5
+
     result = checkinModels.PicsInfo.objects.raw('''
     select checkin_picsinfo.pid, login_userinfo.username, 
     checkin_picsinfo.path, checkin_picsinfo.no, 
     checkin_picsinfo.bref, login_userinfo.danwei,
     checkin_picsinfo.date
-    from login_userinfo left join checkin_picsinfo 
-    on login_userinfo.`no`=checkin_picsinfo.no limit '''+ str(5) +',' + str(30))
+    from login_userinfo right join checkin_picsinfo 
+    on login_userinfo.`no`=checkin_picsinfo.no limit '''+ str(current_page * each_page_num ) +',' + str(each_page_num))
 
 
     print(result)
@@ -117,30 +130,46 @@ def voteList(request):
 
         print(data[i].date)
         i = i + 1
+        # print(data[i].date)
 
-    paginator = Paginator(data, 1)
+    paginator = Paginator(data, each_page_num)
+    print(data)
     try:
-        current_page = int(request.GET.get('page'))
-        posts = paginator.page(current_page)
+        # current_page = int(request.GET.get('page'))
+        posts = paginator.page(1)
 
     except ValueError as e:
         current_page = 1
         posts = paginator.page(current_page)
 
-    page_len = list(posts.paginator.page_range).__len__()
+    page_len = all_page_num
     show_page = 3
-    total_page = 5
+
     top_num = page_len - current_page
     bottom_num = current_page - 1
     if(bottom_num >= show_page):
         bottom_num = show_page
 
     rest_page = total_page - bottom_num
-
+    has_pre = True
+    has_next = True
     if(top_num >= rest_page):
         top_num = rest_page
 
+    if(current_page<=0):
+        has_pre = False
+    if(current_page>=all_page_num-1):
+        has_next = False
 
-    return render(request, 'vote-list.html', {'posts': posts, 'top_num': range(current_page+1, current_page+top_num+1), 'bottom_num': range(current_page-bottom_num, current_page)})
+
+    return render(request, 'vote-list.html', {'posts': posts,
+                                              'top_num': range(current_page+2,current_page+top_num+1),
+                                              'bottom_num': range(current_page-bottom_num, current_page+1),
+                                              'has_pre': has_pre,
+                                              'has_next': has_next,
+                                              'pre_page': current_page,
+                                              'next_page': current_page+2})
+
+# def exportAllExcel:
 
 # https://www.cnblogs.com/gregoryli/p/7683732.html
