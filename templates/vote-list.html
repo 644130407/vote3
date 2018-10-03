@@ -7,16 +7,21 @@
 </head>
 <body>
 <div class="am-g">
-    <p class="am-header">提交列表</p>
-    <table class="am-table am-table-bordered">
-        <tr>
-            <th>编号</th>
-            <th>姓名</th>
-            <th>部门</th>
-            <th>打卡照片</th>
-            <th>留言</th>
-            <th>打卡时间</th>
-        </tr>
+    <p class="am-header">提交列表 </p>
+    <p><button class="am-btn am-btn-success">下载</button></p>
+    <table class="am-table am-table-bordered am-table-striped am-table-compact am-text-sm">
+        <thead>
+        <th>编号</th>
+        <th>姓名</th>
+        <th>部门</th>
+        <th>打卡照片</th>
+        <th>留言</th>
+        <th>打卡时间</th>
+        <th>评语回复</th>
+        <th>回复人</th>
+        <th>操作</th>
+        </thead>
+        <tbody>
         {% for item in posts %}
             <tr>
                 <td>{{ item.no }}</td>
@@ -25,21 +30,57 @@
 
                 <td>
                     <div class="am-text-center">
-                        <img src="/{{ item.path }}" alt="" style="height: 100px">
+                        <img src="/{{ item.path }}" alt="" style="height: 30px">
                     </div>
 
                 </td>
                 <td>{{ item.bref }}</td>
                 <td>{{ item.date }} </td>
+                <td style="max-width: 250px"><div>{{ item.comment }}</div></td>
+                <td>{{ item.author_name }}</td>
+                <td>
+                    {% if item.state == 0 %}
+                        <button type="button" data-pid="{{ item.pid }}" class=" am-btn-sm am-btn am-btn-success"
+                                id="approve-botton" onclick="approve(this)">
+                        通过
+                    {% else %}
+                        <button type="button" data-pid="{{ item.pid }}"
+                                class=" am-btn-sm am-btn am-btn-default am-disabled" id="approve-botton"
+                                onclick="approve(this)">
+                        已通过
+                    {% endif %}
+
+                    </button>
+                    <button type="button" data-pid="{{ item.pid }}" class="am-btn am-btn-danger am-btn-sm"
+                            onclick="refuse(this)">
+                        驳回
+                    </button>
+                </td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
+
+
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">审核打卡信息</div>
+            <div class="am-modal-bd">
+                请说明驳回的原因
+                <input type="text" class="am-modal-prompt-input">
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            </div>
+        </div>
+    </div>
 
 
     <ul class="am-pagination am-pagination-centered">
         {% if has_pre %}
-            <li class="am-active"><a href="/voteList?page={{ pre_page  }}">&laquo;</a></li>
-            {% else %}
+            <li class="am-active"><a href="/voteList?page={{ pre_page }}">&laquo;</a></li>
+        {% else %}
             <li class="am-disabled"><a href="#">&laquo;</a></li>
         {% endif %}
         {% for page in bottom_num %}
@@ -51,9 +92,10 @@
 
         {% if has_next %}
             <li class="am-active"><a href="/voteList?page={{ next_page }}">&raquo;</a></li>
-            {% else %}
+        {% else %}
             <li class="am-disabled"><a href="#">&raquo;</a></li>
         {% endif %}
+
     </ul>
 
 
@@ -61,4 +103,56 @@
 </body>
 <script src="/static/js/jquery-3.3.1.min.js"></script>
 <script src="/static/amaze/js/amazeui.min.js"></script>
+<script>
+    function approve(obj) {
+        var pid = $(obj).data("pid")
+        $.ajax({
+            method: "post",
+            data: {
+                pid: pid
+            },
+            url: '/approve/',
+            success: function (data) {
+                if (data) {
+                    $(obj).attr("class", "am-btn am-btn-default am-disabled")
+                    $(obj).text("已通过")
+                } else {
+                    alert("修改失败")
+                }
+            },
+            error: function (err) {
+                console.log("修改失败")
+            }
+        })
+    }
+
+    function refuse(obj) {
+        var pid = $(obj).data("pid")
+        $("#my-prompt").modal({
+            relatedTarget: obj,
+            onConfirm: function (e) {
+                $.ajax({
+                    method: "post",
+                    url: "/refuse/",
+                    data: {
+                        pid: pid,
+                        comment: e.data || ''
+                    },
+                    success: function (data) {
+                        {#alert("asdfsafsa")#}
+                        console.log(data.comment)
+                        console.log($(obj).parent().parent().find("td").eq(6).find('div').html(data.comment))
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+
+            },
+            onCancel: function (e) {
+
+            }
+        });
+    }
+</script>
 </html>

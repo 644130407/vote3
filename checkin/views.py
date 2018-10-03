@@ -6,6 +6,8 @@ import time
 from login import models as loginModels
 from django.core.paginator import Paginator, Page
 import math
+import json
+from management import models as managementModels
 from xlwt import *
 
 
@@ -94,39 +96,49 @@ def saveInfo(request):
     else:
         return HttpResponse(0)
 
+#打卡数据库检索
+
+# def voteLiteSQL:
+
+
+
+
 
 # 打卡列表查询
 
 def voteList(request):
     # 当前页面
-    current_page = int(request.GET.get('page'))-1
+    current_page = int(request.GET.get('page')) - 1
     # 所有记录条目数
     all_item_num = checkinModels.PicsInfo.objects.count()
-    #每页显示条目数
-    each_page_num = 3
-    #页面总数
-    all_page_num = math.ceil(all_item_num /each_page_num)
-    #显示页码数
+    # 每页显示条目数
+    each_page_num = 10
+    # 页面总数
+    all_page_num = math.ceil(all_item_num / each_page_num)
+    # 显示页码数
     total_page = 5
 
     result = checkinModels.PicsInfo.objects.raw('''
     select checkin_picsinfo.pid, login_userinfo.username, 
     checkin_picsinfo.path, checkin_picsinfo.no, 
     checkin_picsinfo.bref, login_userinfo.danwei,
-    checkin_picsinfo.date
+    checkin_picsinfo.date, checkin_picsinfo.state,
+    checkin_picsinfo.comment, management_admininfo.username as author_name
     from login_userinfo right join checkin_picsinfo 
-    on login_userinfo.`no`=checkin_picsinfo.no limit '''+ str(current_page * each_page_num ) +',' + str(each_page_num))
-
+    on login_userinfo.`no`=checkin_picsinfo.no
+	left join management_admininfo
+	on management_admininfo.id = checkin_picsinfo.comment_author 
+	ORDER BY checkin_picsinfo.pid desc
+	limit ''' + str(current_page * each_page_num) + ',' + str(each_page_num))
 
     print(result)
     i = 0
     data = list(result)
 
-
     for item in result:
         # data.append(item)
         # print(type(item))
-        data[i].date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(item.date))
+        data[i].date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(item.date++28800))
 
         print(data[i].date)
         i = i + 1
@@ -147,29 +159,51 @@ def voteList(request):
 
     top_num = page_len - current_page
     bottom_num = current_page - 1
-    if(bottom_num >= show_page):
+    if (bottom_num >= show_page):
         bottom_num = show_page
 
     rest_page = total_page - bottom_num
     has_pre = True
     has_next = True
-    if(top_num >= rest_page):
+    if (top_num >= rest_page):
         top_num = rest_page
 
-    if(current_page<=0):
+    if (current_page <= 0):
         has_pre = False
-    if(current_page>=all_page_num-1):
+    if (current_page >= all_page_num - 1):
         has_next = False
 
-
     return render(request, 'vote-list.html', {'posts': posts,
-                                              'top_num': range(current_page+2,current_page+top_num+1),
-                                              'bottom_num': range(current_page-bottom_num, current_page+1),
+                                              'top_num': range(current_page + 2, current_page + top_num + 1),
+                                              'bottom_num': range(current_page - bottom_num, current_page + 1),
                                               'has_pre': has_pre,
                                               'has_next': has_next,
                                               'pre_page': current_page,
-                                              'next_page': current_page+2})
+                                              'next_page': current_page + 2})
 
-# def exportAllExcel:
+
+def exportAllExcel(request):
+    return render(request, 'export-all-excel.html')
+
+
+def approve(request):
+    if request.method == "POST":
+        pid = request.POST.get('pid')
+        result = checkinModels.PicsInfo.objects.filter(pid=pid).update(state=1)
+        if result > 0:
+            return HttpResponse(True)
+    return HttpResponse(False)
+
+
+def refuse(request):
+    if request.method == "POST":
+        pid = request.POST.get('pid')
+        comment = request.POST.get('comment')
+        result = checkinModels.PicsInfo.objects.filter(pid=pid).update(state=0, comment=comment)
+        if result > 0:
+            return HttpResponse(json.dumps({'state': True, 'comment': comment}), content_type="application/json")
+    return HttpResponse(False)
+
+
 
 # https://www.cnblogs.com/gregoryli/p/7683732.html
